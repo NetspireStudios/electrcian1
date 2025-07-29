@@ -14,11 +14,41 @@ body {
     line-height: 1.6;
     color: #333;
     background-color: #ffffff;
-    /* Mobile optimizations */
+    /* Enhanced mobile optimizations */
     -webkit-text-size-adjust: 100%;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    /* Mobile scroll optimization */
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    /* Prevent mobile zoom on form focus */
+    touch-action: manipulation;
+}
+
+/* Mobile-specific optimizations */
+@media (max-width: 768px) {
+    * {
+        /* Improve mobile performance */
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+    }
+    
+    body {
+        /* Prevent horizontal scroll */
+        overflow-x: hidden;
+        /* Improve scrolling */
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior-y: contain;
+    }
+    
+    /* Optimize fonts for mobile */
+    h1, h2, h3, h4, h5, h6 {
+        text-rendering: optimizeSpeed;
+        -webkit-font-smoothing: antialiased;
+    }
 }
 
 .container {
@@ -83,10 +113,32 @@ p {
     cursor: pointer;
     font-size: 1rem;
     text-align: center;
-    /* Mobile touch optimization */
+    /* Enhanced mobile touch optimization */
     min-height: 44px;
     touch-action: manipulation;
-    -webkit-tap-highlight-color: transparent;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+    user-select: none;
+    -webkit-user-select: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease, height 0.3s ease;
+}
+
+.btn:active::before {
+    width: 300px;
+    height: 300px;
 }
 
 .btn-primary {
@@ -1071,8 +1123,15 @@ p {
     border: 1px solid var(--border-light);
     border-radius: 8px;
     font-size: 1rem;
-    transition: border-color 0.3s ease;
+    transition: all 0.3s ease;
     font-family: inherit;
+    /* Mobile optimization */
+    min-height: 44px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .form-group input:focus,
@@ -1081,6 +1140,31 @@ p {
     outline: none;
     border-color: var(--text-dark);
     box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+    transform: scale(1.02);
+}
+
+/* Mobile form optimizations */
+@media (max-width: 768px) {
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 1rem;
+        font-size: 1.1rem;
+        min-height: 50px;
+        border-radius: 10px;
+    }
+    
+    .form-group textarea {
+        min-height: 120px;
+    }
+    
+    .form-group select {
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 1rem center;
+        background-size: 1rem;
+        padding-right: 3rem;
+    }
 }
 
 .form-group textarea {
@@ -1258,13 +1342,34 @@ p {
         align-items: center;
         gap: 1rem;
         margin-bottom: 2rem;
+        width: 100%;
+        padding: 0 20px;
     }
     
     .hero-buttons .btn {
         width: 100%;
-        max-width: 280px;
-        padding: 1rem 2rem;
-        font-size: 1rem;
+        max-width: 320px;
+        padding: 1.2rem 2rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 12px;
+        min-height: 56px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transition: all 0.3s ease;
+        /* Enhanced touch optimization */
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+        touch-action: manipulation;
+        user-select: none;
+        -webkit-user-select: none;
+    }
+    
+    .hero-buttons .btn:active {
+        transform: translateY(2px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     }
     
     .hero-features {
@@ -1286,6 +1391,17 @@ p {
     .service-card {
         padding: 1.5rem;
         margin: 0 10px;
+        /* Enhanced mobile touch */
+        min-height: 280px;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .service-card:active {
+        transform: translateY(-4px) scale(0.98);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
     }
     
     /* About Section */
@@ -1414,8 +1530,12 @@ p {
     
     .hero-buttons .btn {
         max-width: 100%;
-        font-size: 0.9rem;
-        padding: 0.875rem 1.5rem;
+        font-size: 1rem;
+        padding: 1.1rem 2rem;
+        min-height: 52px;
+        margin: 0 10px;
+        border-radius: 10px;
+        font-weight: 600;
     }
     
     .services,
@@ -1448,17 +1568,42 @@ p {
     }
     
     .carousel-btn {
-        width: 35px;
-        height: 35px;
-        font-size: 0.9rem;
+        width: 44px;
+        height: 44px;
+        font-size: 1rem;
+        /* Enhanced mobile touch */
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: rgba(255, 255, 255, 0.2);
+        background-color: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(4px);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .carousel-btn:active {
+        transform: translateY(-50%) scale(0.9);
+        background-color: rgba(0, 0, 0, 0.9);
     }
     
     .carousel-btn-prev {
-        left: 5px;
+        left: 10px;
     }
     
     .carousel-btn-next {
-        right: 5px;
+        right: 10px;
+    }
+    
+    /* Add touch-friendly dots */
+    .carousel-dot {
+        width: 16px;
+        height: 16px;
+        border-width: 3px;
+        margin: 0 8px;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+    }
+    
+    .carousel-dot:active {
+        transform: scale(1.3);
     }
     
     .emergency-contact {
@@ -1466,8 +1611,20 @@ p {
     }
     
     .emergency-btn {
-        padding: 0.875rem 1.5rem;
-        font-size: 0.9rem;
+        padding: 1.1rem 2rem;
+        font-size: 1rem;
+        min-height: 52px;
+        border-radius: 10px;
+        font-weight: 600;
+        /* Enhanced mobile touch */
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    .emergency-btn:active {
+        transform: translateY(1px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     }
 }
 
@@ -1483,6 +1640,90 @@ p {
     
     .testimonials-grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+    
+    /* Tablet-specific touch optimizations */
+    .btn {
+        min-height: 48px;
+        padding: 0.875rem 1.75rem;
+    }
+    
+    .service-card {
+        min-height: 320px;
+    }
+}
+
+/* Mobile-only features */
+@media (max-width: 768px) {
+    /* Add subtle mobile indicators */
+    .service-card::after {
+        content: '👆 Tap for details';
+        position: absolute;
+        bottom: 1rem;
+        right: 1rem;
+        font-size: 0.8rem;
+        color: var(--text-light);
+        opacity: 0.7;
+        pointer-events: none;
+    }
+    
+    /* Improve text selection on mobile */
+    .hero-title,
+    .hero-subtitle {
+        -webkit-user-select: text;
+        user-select: text;
+    }
+    
+    /* Mobile-specific animations */
+    .btn {
+        transition: all 0.2s ease;
+    }
+    
+    .btn:active {
+        animation: mobilePress 0.2s ease;
+    }
+}
+
+/* Mobile press animation */
+@keyframes mobilePress {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.98); }
+    100% { transform: scale(1); }
+}
+
+/* Landscape mobile optimization */
+@media (max-width: 768px) and (orientation: landscape) {
+    .hero {
+        min-height: 100vh;
+        padding: 80px 0 40px;
+    }
+    
+    .hero-title {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .hero-buttons {
+        flex-direction: row;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .hero-buttons .btn {
+        max-width: 200px;
+        padding: 0.875rem 1.5rem;
+        font-size: 0.95rem;
+    }
+    
+    .hero-features {
+        flex-direction: row;
+        gap: 1.5rem;
+        justify-content: center;
     }
 }
 

@@ -4,19 +4,46 @@ document.addEventListener('DOMContentLoaded', function() {
     const hamburger = document.querySelector('.hamburger');
     const navMenu = document.querySelector('.nav-menu');
     
-    hamburger.addEventListener('click', function() {
-        hamburger.classList.toggle('active');
-        navMenu.classList.toggle('active');
-        document.body.classList.toggle('menu-open');
-    });
+    // Add null checks and error handling
+    if (hamburger && navMenu) {
+        hamburger.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            console.log('Hamburger clicked'); // Debug log
+            
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+            document.body.classList.toggle('menu-open');
+            
+            // Force a style recalculation
+            hamburger.offsetHeight;
+            navMenu.offsetHeight;
+        });
+    } else {
+        console.error('Hamburger or navigation menu not found');
+    }
     
     // Close mobile menu when clicking on a link
     document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', function() {
-            hamburger.classList.remove('active');
-            navMenu.classList.remove('active');
-            document.body.classList.remove('menu-open');
+            if (hamburger && navMenu) {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+                document.body.classList.remove('menu-open');
+            }
         });
+    });
+    
+    // Close menu when clicking outside
+    document.addEventListener('click', function(e) {
+        if (hamburger && navMenu && navMenu.classList.contains('active')) {
+            if (!navMenu.contains(e.target) && !hamburger.contains(e.target)) {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+                document.body.classList.remove('menu-open');
+            }
+        }
     });
     
     // Smooth Scrolling for Navigation Links
@@ -889,56 +916,88 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Add CSS for mobile navigation
 const mobileNavCSS = `
+/* Force hamburger visibility on all screens for testing */
+.hamburger {
+    display: flex !important;
+    flex-direction: column;
+    cursor: pointer;
+    gap: 4px;
+    padding: 10px;
+    z-index: 1001;
+    background: transparent;
+    border: none;
+    position: relative;
+}
+
+.hamburger span {
+    width: 25px;
+    height: 3px;
+    background-color: var(--text-dark);
+    transition: all 0.3s ease;
+    display: block;
+}
+
 @media (max-width: 768px) {
     .nav-menu {
-        position: fixed;
-        left: -100%;
-        top: 70px;
-        flex-direction: column;
-        background-color: white;
-        width: 100%;
-        text-align: center;
-        transition: 0.3s ease-in-out;
-        box-shadow: 0 10px 27px rgba(0, 0, 0, 0.1);
-        padding: 2rem 0;
-        z-index: 999;
-        max-height: calc(100vh - 70px);
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
+        position: fixed !important;
+        left: -100% !important;
+        top: 70px !important;
+        flex-direction: column !important;
+        background-color: white !important;
+        width: 100% !important;
+        text-align: center !important;
+        transition: left 0.3s ease-in-out !important;
+        box-shadow: 0 10px 27px rgba(0, 0, 0, 0.15) !important;
+        padding: 2rem 0 !important;
+        z-index: 999 !important;
+        max-height: calc(100vh - 70px) !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        display: flex !important;
     }
     
     .nav-menu.active {
-        left: 0;
+        left: 0 !important;
+        transform: translateX(0) !important;
     }
     
     .nav-menu li {
-        margin: 0.5rem 0;
+        margin: 0.5rem 0 !important;
+        list-style: none !important;
     }
     
     .nav-link {
-        padding: 1rem 2rem;
-        border-radius: 8px;
-        margin: 0 1rem;
-        transition: all 0.3s ease;
-        min-height: 44px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        padding: 1rem 2rem !important;
+        border-radius: 8px !important;
+        margin: 0 1rem !important;
+        transition: all 0.3s ease !important;
+        min-height: 44px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-decoration: none !important;
+        color: var(--text-dark) !important;
     }
     
     .nav-link:hover {
-        background-color: #f5f5f5;
+        background-color: #f5f5f5 !important;
     }
     
     .nav-link.active {
-        color: var(--text-dark);
-        font-weight: 600;
+        color: var(--text-dark) !important;
+        font-weight: 600 !important;
     }
     
     .btn-book-now {
         margin: 1rem !important;
         width: calc(100% - 2rem) !important;
         max-width: 280px !important;
+        background-color: var(--text-dark) !important;
+        color: var(--text-white) !important;
+    }
+    
+    .hamburger {
+        display: flex !important;
     }
     
     .hamburger.active span:nth-child(2) {
@@ -954,11 +1013,34 @@ const mobileNavCSS = `
     }
 }
 
+@media (min-width: 769px) {
+    .hamburger {
+        display: none !important;
+    }
+    
+    .nav-menu {
+        position: static !important;
+        left: auto !important;
+        top: auto !important;
+        flex-direction: row !important;
+        background-color: transparent !important;
+        width: auto !important;
+        text-align: left !important;
+        transition: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        z-index: auto !important;
+        max-height: none !important;
+        overflow-y: visible !important;
+        display: flex !important;
+    }
+}
+
 /* Prevent body scroll when mobile menu is open */
 body.menu-open {
-    overflow: hidden;
-    position: fixed;
-    width: 100%;
+    overflow: hidden !important;
+    position: fixed !important;
+    width: 100% !important;
 }
 `;
 
